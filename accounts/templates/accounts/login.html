@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập</title>
+
+    <!-- Google Fonts -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    {% load static %}
+    <link rel="icon" href="{% static 'dashboard/img/logo.png' %}" type="image/x-icon">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #C7F0D8 100%);
+            color: #1F2937;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            color: #047857;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #C7F0D8;
+            border-radius: 4px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .logo {
+            display: flex;
+            width: 60px;
+            height: 60px;
+        }
+
+        .actions button {
+            height: 40px;
+            padding: 0 20px;
+            border-radius: 999px;
+            border: 1px solid #E5E7EB;
+            background: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+
+        /* Main */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            position: relative;
+        }
+
+        .blur-1,
+        .blur-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+        }
+
+        .blur-1 {
+            width: 380px;
+            height: 380px;
+            background: rgba(255, 255, 255, .6);
+            top: 20%;
+            left: 15%;
+        }
+
+        .blur-2 {
+            width: 260px;
+            height: 260px;
+            background: rgba(199, 240, 216, .8);
+            bottom: 20%;
+            right: 15%;
+        }
+
+        /* Card */
+        .card {
+            width: 100%;
+            max-width: 480px;
+            max-height: 700px;
+            background: #fff;
+            border-radius: 20px;
+            padding: 48px 40px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.06);
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #047857;
+            transform: rotate(3deg);
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #6B7280;
+        }
+
+        /* Form */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            padding-left: 4px;
+        }
+
+        .field {
+            position: relative;
+        }
+
+        .field input {
+            width: 100%;
+            height: 52px;
+            padding: 0 44px;
+            border-radius: 16px;
+            border: none;
+            background: #F5F5F5;
+            font-size: 15px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, .05);
+        }
+
+        .field input:focus {
+            outline: none;
+            background: #fff;
+            box-shadow: 0 0 0 2px #C7F0D8;
+        }
+
+        .field span {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+        }
+
+        .toggle {
+            position: absolute;
+            right: 54px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #9CA3AF;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .row label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .submit {
+            height: 52px;
+            border-radius: 16px;
+            border: none;
+            background: #C7F0D8;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            color: #064E3B;
+            box-shadow: 0 10px 25px rgba(199, 240, 216, .6);
+            transition: .2s;
+        }
+
+        .submit:hover {
+            background: #A3D9B8;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #6B7280;
+            margin: 8px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #E5E7EB;
+        }
+
+        .social {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .social button {
+            height: 44px;
+            border-radius: 16px;
+            border: 1px solid #E5E7EB;
+            background: #fff;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .footer-text {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: rgba(107, 114, 128, .8);
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 16px 20px;
+            }
+
+            .card {
+                padding: 36px 24px;
+            }
+        }
+
+        .fa-brands {
+            width: 25px;
+            height: 12px;
+
+        }
+
+        .fa-google {
+            color: #4285F4;
+        }
+
+        .fa-facebook {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <img src="{% static 'dashboard/img/logo.png' %}" alt="logo" class="logo">
+
+        <div class="actions">
+            <button>Trợ giúp</button>
+            <button><a href="{% url 'register' %}">Đăng ký</a></button>
+        </div>
+    </header>
+
+    <main>
+        <div class="blur-1"></div>
+        <div class="blur-2"></div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="icon"><img src="{% static 'dashboard/img/logo.png' %}" alt="logo" class="logo"></div>
+                <h1>Chào mừng trở lại!</h1>
+                <p class="subtitle">Đăng nhập để tiếp tục viết câu chuyện của bạn.</p>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div>
+                    <label>Email</label>
+                    <div class="field">
+                        <span class="material-symbols-outlined">mail</span>
+                        <input type="email" name="email" placeholder="nguyenvana@gmail.com" />
+                    </div>
+                </div>
+
+                <div>
+                    <label>Mật khẩu</label>
+                    <div class="field">
+                        <span class="material-symbols-outlined">lock</span>
+                        <input type="password" id="password" name='password' placeholder="Nhập mật khẩu" />
+                        <button type="button" class="toggle"><span class="material-symbols-outlined"
+                                data-target="password"
+                                onclick="togglePasswordVisibility(this)">visibility_off</span></button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label><input type="checkbox" /> Ghi nhớ tôi</label>
+                    <a href="#">Quên mật khẩu?</a>
+                </div>
+
+                <div class="row">
+                    <span style="color:red">{{error}}</span>
+                </div>
+
+                <button class="submit">Đăng nhập</button>
+
+                <div class="divider">Hoặc tiếp tục với</div>
+
+                <div class="social">
+                    <button><i class="fa-brands fa-google"></i> Google</button>
+                    <button><i class="fa-brands fa-facebook"></i> Facebook</button>
+                </div>
+            </form>
+
+            <p class="footer-text">Chưa có tài khoản? <a href="{% url 'register' %}"><strong>Đăng ký ngay</strong></a>
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        © 2023 Nhật Ký Của Tôi. Bản quyền đã được bảo hộ.
+    </footer>
+
+    <!-- js -->
+    <script src="{% static 'accounts/js/togglePasswordVisibility.js' %}"></script>
+</body>
+
+</html>

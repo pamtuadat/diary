@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Quản lý Nhật ký</title>
+    <link rel="icon" href="{% static 'dashboard/img/logo.png' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Poppins:wght@600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "primary-dark": "#0ea643",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2c20",
+                        "text-dark": "#111813",
+                        "text-light": "#61896f",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "heading": ["Poppins", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.25rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "soft": "0 4px 20px -2px rgba(19, 236, 91, 0.08), 0 2px 10px -2px rgba(0, 0, 0, 0.04)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: #445c44;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .menu-item:hover {
+            background-color: #e6fbe6;
+        }
+
+        .menu-item.active {
+            background-color: #13ec13;
+            color: #0a2b0a;
+            font-weight: 700;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-text-dark dark:text-gray-100 overflow-hidden font-display">
+    <div class="flex h-screen w-full">
+        <aside class="w-[280px] bg-white border-r border-[#e0e6e0] flex flex-col shrink-0 h-full z-20">
+            <!-- TOP -->
+            <div class="flex flex-col p-6 gap-8 flex-1">
+                <!-- LOGO -->
+                <div class="flex items-center gap-3">
+                    <div class="  size-10 bg-primary/20 flex items-center justify-center">
+                        <img src="{% static 'dashboard/img/logo.png' %}" alt="logo">
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-display font-bold">Diary Online</h1>
+                        <p class="text-xs uppercase tracking-wide text-[#618961]">Admin Panel</p>
+                    </div>
+                </div>
+
+                <!-- MENU -->
+                <nav class="flex flex-col gap-2">
+                    <a href="{% url 'admin' %}" class="menu-item">
+                        <span>Trang chủ</span>
+                    </a>
+
+                    <a href="{% url 'users' %}" class="menu-item">
+                        <span>Quản lý người dùng</span>
+                    </a>
+                    <a href="{% url 'diaries' %}" class="menu-item active">
+                        <span>Quản lý nhật ký</span>
+                    </a>
+
+                    <a href="{% url 'reports' %}" class="menu-item">
+                        <span>Thống kê</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- LOGOUT -->
+            <div class="p-4 border-t border-[#e0e6e0]">
+                <a href="{% url 'logout' %}"
+                    class="flex items-center gap-3 px-4 py-3   text-red-600 hover:bg-red-50 transition">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="font-medium">Đăng xuất</span>
+                </a>
+            </div>
+        </aside>
+        <main class="flex-1 flex flex-col h-full overflow-hidden relative bg-[#f8faf9] dark:bg-[#102216]">
+            <header
+                class="h-16 bg-white/80 backdrop-blur-md border-b border-[#e0e6e0] flex items-center justify-between px-6 lg:px-8 sticky top-0 z-10 shrink-0">
+                <div class="flex items-center gap-2 text-sm text-[#618961]">
+                    <span>Trang chủ</span>
+                    <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                    <span class="text-[#111811] font-medium">Quản lý nhật ký</span>
+                </div>
+                <div class="flex items-center gap-2 lg:gap-4">
+                    <button class="relative p-2 text-[#618961] hover:bg-gray-100 rounded-full transition-colors">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    <button class="relative p-2 text-[#618961] hover:bg-gray-100 rounded-full transition-colors">
+                        <span class="material-symbols-outlined">settings</span>
+                    </button>
+                    <div class="h-8 w-px bg-[#e0e6e0] mx-1"></div>
+                    <div class="flex items-center gap-3 pl-1">
+                        <div class="hidden md:flex flex-col items-end">
+                            <p class="text-[#111811] text-sm font-bold leading-none">{{username}}</p>
+                            <p class="text-[#618961] text-xs mt-1">{{email}}</p>
+                        </div>
+                        <div class="bg-center bg-no-repeat bg-cover rounded-full size-9 border-2 border-white shadow-sm ring-1 ring-[#e0e6e0]"
+                            data-alt="Admin User Avatar"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCeXk2E21vqWv_wiQRxS8S9F0qFWTTk5GrmJAO9ErEcjKQ0KnFZOjUSk_ZzXXItzrmr24hGO4Xn-LhYU1hZvGepy1IEZIEyoY5jtOUDlq6saRUoo9dmn3kHzRoeX9jIb_1pivpa9a-XmvurJMddQ3gnkwIUvVpAme5CbTvJZfioClxaDgt2ixDwxIEkcren-ESG2A3tYRO2l9tjBjqZ_9188duj3bj9Y4Ewv8BWDgC-E1D06UytixwJYeV50u8gs-fKv-8pP0RCEA");'>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
+                <div class="max-w-7xl mx-auto flex flex-col gap-6">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                        <div>
+                            <h2
+                                class="text-3xl md:text-4xl font-bold text-text-dark dark:text-white tracking-tight mb-2 font-heading">
+                                Quản lý Nhật ký</h2>
+                            <p class="text-text-light dark:text-gray-400 text-sm md:text-base">Kiểm soát và quản lý nội
+                                dung người dùng một cách hiệu quả.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button
+                                class="bg-surface-light dark:bg-surface-dark border border-[#dbe6df] dark:border-[#2a4030] hover:bg-gray-50 dark:hover:bg-[#233829] text-text-dark dark:text-white h-11 px-5 rounded-full text-sm font-medium flex items-center gap-2 transition-all shadow-sm">
+                                <span class="material-symbols-outlined text-lg">download</span>
+                                Export Report
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-surface-light dark:bg-surface-dark p-6  shadow-soft border border-[#dbe6df] dark:border-[#2a4030] flex flex-col lg:flex-row gap-6 lg:items-end">
+                        <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold uppercase text-text-light tracking-wider ml-1">Tìm
+                                    kiếm</label>
+                                <div class="relative group">
+                                    <form action="{% url 'diaries' %}" method="GET">
+                                        <span
+                                            class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-light group-focus-within:text-primary-dark transition-colors">search</span>
+                                        <input name='tim-kiem'
+                                            class="w-full h-12 pl-11 pr-4   border-none bg-[#f6f8f6] dark:bg-[#102216] focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-[#1a2c20] text-sm font-medium text-text-dark dark:text-white placeholder:text-[#9ca3af] transition-all shadow-inner"
+                                            placeholder="Nhập tiêu đề, ID..." type="text" />
+                                    </form>
+
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold uppercase text-text-light tracking-wider ml-1">Lọc theo
+                                    User</label>
+                                <div class="relative group">
+                                    <form action="{% url 'diaries' %}" method="GET">
+                                        <span
+                                            class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-light group-focus-within:text-primary-dark transition-colors">person_search</span>
+                                        <input name="tim-user"
+                                            class="w-full h-12 pl-11 pr-4   border-none bg-[#f6f8f6] dark:bg-[#102216] focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-[#1a2c20] text-sm font-medium text-text-dark dark:text-white placeholder:text-[#9ca3af] transition-all shadow-inner"
+                                            placeholder="Tên người dùng..." type="text" />
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2 shrink-0">
+                            <label class="text-xs font-bold uppercase text-text-light tracking-wider ml-1">Trạng
+                                thái</label>
+                            <div
+                                class="flex bg-[#f6f8f6] dark:bg-[#102216] p-1.5  rounded-xl h-12 items-center shadow-inner">
+                                <button
+                                    class="h-full px-5 rounded-lg bg-white dark:bg-[#2a4030] shadow-sm text-text-dark dark:text-white text-sm font-bold transition-all border border-gray-100 dark:border-transparent">Tất
+                                    cả</button>
+                                <button
+                                    class="h-full px-5 rounded-lg text-text-light hover:text-text-dark dark:hover:text-white text-sm font-medium transition-all hover:bg-gray-100 dark:hover:bg-[#1a2c20]">Công
+                                    khai</button>
+                                <button
+                                    class="h-full px-5 rounded-lg text-text-light hover:text-text-dark dark:hover:text-white text-sm font-medium transition-all hover:bg-gray-100 dark:hover:bg-[#1a2c20]">Riêng
+                                    tư</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-surface-light dark:bg-surface-dark  shadow-soft border border-[#dbe6df] dark:border-[#2a4030] overflow-hidden flex flex-col">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr
+                                        class="bg-[#f9faf9] dark:bg-[#233829] border-b border-[#dbe6df] dark:border-[#2a4030]">
+                                        <th
+                                            class="py-5 px-6 text-xs font-bold uppercase tracking-wider text-text-light w-24">
+                                            ID</th>
+                                        <th
+                                            class="py-5 px-6 text-xs font-bold uppercase tracking-wider text-text-light">
+                                            Tiêu đề Nhật ký</th>
+                                        <th
+                                            class="py-5 px-6 text-xs font-bold uppercase tracking-wider text-text-light">
+                                            Người viết</th>
+                                        <th
+                                            class="py-5 px-6 text-xs font-bold uppercase tracking-wider text-text-light">
+                                            Ngày tạo</th>
+                                        <th
+                                            class="py-5 px-6 text-xs font-bold uppercase tracking-wider text-text-light">
+                                            Trạng thái</th>
+                                        <th
+                                            class="py-5 px-6 text-xs font-bold uppercase tracking-wider text-text-light text-right">
+                                            Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-[#dbe6df] dark:divide-[#2a4030]">
+                                    {% for diary in diaries %}
+                                    <tr class="group hover:bg-[#f0f9f4] dark:hover:bg-[#1a2c20]/80 transition-colors">
+                                        <td class="py-4 px-6 text-sm font-bold text-text-light">#{{diary.id}}</td>
+                                        <td class="py-4 px-6">
+                                            <p
+                                                class="text-sm font-bold text-text-dark dark:text-white group-hover:text-primary-dark transition-colors font-heading">
+                                                {{diary.title}}</p>
+                                            <p class="text-xs text-text-light mt-1 truncate max-w-[200px]">
+                                                {{diary.content|truncatechars:30}}</p>
+                                        </td>
+                                        <td class="py-4 px-6">
+                                            <div class="flex items-center gap-3">
+                                                <div class="size-9 rounded-full bg-cover bg-center ring-2 ring-white dark:ring-[#2a4030]"
+                                                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDPHc_ypVQ9jL8zss_iKImHwRK3lpdCqnmozJGjVdVvhcbs-ALoGQ79PBGda-It48vo1V5SZqu6T1OJ33pAiXEprnRJqlDY_o4mGHZrvuk3zr_MLZ51ssaQ9U0YIugbwE21mJvhToecPP30nAeU6720vWPVVn1bZgWVgqQiEUuDlI266CpMuMMDpa2WEiT-OqLjBBHpYuXaOpYLg5N1mqTzkBVjE_YYobnqkiqy2dAypyX-dEeCe_dFlKAYt1OfgYwa_Bpbw5sJ4w');">
+                                                </div>
+                                                <span
+                                                    class="text-sm font-medium text-text-dark dark:text-gray-200">{{diary.user.username}}</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-6 text-sm text-text-dark dark:text-gray-300 font-medium">
+                                            {{diary.create_at}}</td>
+                                        <td class="py-4 px-6">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-[#e3fcee] text-[#0f5132] border border-[#bef4d5]">
+                                                <span class="material-symbols-outlined text-[14px]">public</span>
+                                                Public
+                                            </span>
+                                        </td>
+                                        <td class="py-4 px-6">
+                                            <div class="flex items-center justify-end gap-2">
+                                                <button
+                                                    class="size-9 rounded-full bg-white dark:bg-[#2a4030] border border-[#dbe6df] dark:border-[#405a48] text-text-light hover:text-primary-dark hover:border-primary-dark flex items-center justify-center transition-all shadow-sm hover:shadow-md"
+                                                    title="View Details">
+                                                    <span
+                                                        class="material-symbols-outlined text-[18px]">visibility</span>
+                                                </button>
+                                                <button
+                                                    class="size-9 rounded-full bg-white dark:bg-[#2a4030] border border-[#dbe6df] dark:border-[#405a48] text-text-light hover:text-orange-500 hover:border-orange-500 flex items-center justify-center transition-all shadow-sm hover:shadow-md"
+                                                    title="Hide">
+                                                    <span
+                                                        class="material-symbols-outlined text-[18px]">visibility_off</span>
+                                                </button>
+                                                <button
+                                                    class="size-9 rounded-full bg-white dark:bg-[#2a4030] border border-[#dbe6df] dark:border-[#405a48] text-text-light hover:bg-red-50 hover:text-red-500 hover:border-red-200 flex items-center justify-center transition-all shadow-sm hover:shadow-md"
+                                                    title="Delete">
+                                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr class="text-center">
+                                        <td colspan="6">Không tìm thấy diary.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div
+                            class="px-6 py-4 flex items-center justify-between border-t border-[#dbe6df] dark:border-[#2a4030] bg-surface-light dark:bg-surface-dark">
+                            <p class="text-xs text-text-light font-medium">Hiển thị 1-4 trên 48 kết quả</p>
+                            <div class="flex items-center gap-2">
+                                <button
+                                    class="size-9 rounded-lg flex items-center justify-center text-text-light hover:bg-[#f0f4f2] dark:hover:bg-[#1a2c20] disabled:opacity-50 transition-colors">
+                                    <span class="material-symbols-outlined text-sm">chevron_left</span>
+                                </button>
+                                <button
+                                    class="size-9 rounded-lg flex items-center justify-center bg-primary text-[#052e16] font-bold text-sm shadow-sm hover:bg-primary-dark/20 transition-colors">1</button>
+                                <button
+                                    class="size-9 rounded-lg flex items-center justify-center text-text-light hover:bg-[#f0f4f2] dark:hover:bg-[#1a2c20] text-sm font-medium transition-colors">2</button>
+                                <button
+                                    class="size-9 rounded-lg flex items-center justify-center text-text-light hover:bg-[#f0f4f2] dark:hover:bg-[#1a2c20] text-sm font-medium transition-colors">3</button>
+                                <button
+                                    class="size-9 rounded-lg flex items-center justify-center text-text-light hover:bg-[#f0f4f2] dark:hover:bg-[#1a2c20] transition-colors">
+                                    <span class="material-symbols-outlined text-sm">chevron_right</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div class="hidden fixed inset-0 z-50 flex items-center justify-center bg-[#102216]/60 backdrop-blur-sm p-4">
+        <div
+            class="bg-white dark:bg-[#1a2c20] w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-[#dbe6df] dark:border-[#2a4030] transform scale-100 transition-all">
+            <div class="p-6 flex flex-col items-center text-center gap-4">
+                <div
+                    class="size-16 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-500 mb-2 shadow-inner">
+                    <span class="material-symbols-outlined text-4xl">warning</span>
+                </div>
+                <h3 class="text-xl font-bold text-text-dark dark:text-white font-heading">Xóa Nhật ký?</h3>
+                <p class="text-text-light dark:text-gray-400 text-sm leading-relaxed px-4">Hành động này không thể hoàn
+                    tác. Bạn có chắc chắn muốn xóa nhật ký <br /><span
+                        class="font-bold text-text-dark dark:text-white mt-1 block">"Chuyến đi Đà Lạt đáng nhớ"</span>?
+                </p>
+            </div>
+            <div
+                class="bg-[#f9faf9] dark:bg-[#233829] px-6 py-5 flex gap-3 justify-center border-t border-[#dbe6df] dark:border-[#2a4030]">
+                <button
+                    class="flex-1 h-11 rounded-full border border-[#dbe6df] dark:border-[#405a48] bg-white dark:bg-transparent text-text-dark dark:text-white font-medium text-sm hover:bg-gray-50 dark:hover:bg-[#2a4030] transition-colors shadow-sm">Hủy
+                    bỏ</button>
+                <button
+                    class="flex-1 h-11 rounded-full bg-red-500 hover:bg-red-600 text-white font-medium text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                    Xác nhận xóa
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

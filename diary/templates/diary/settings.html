@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Cài đặt</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(160deg, #fff 0%, #C7F0D8 100%);
+            height: 100vh;
+        }
+
+        .dark body {
+            background: linear-gradient(135deg, #111418, #0d1216);
+            color: #fff;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Poppins', sans-serif
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, .7);
+            border-bottom: 1px solid rgba(255, 255, 255, .4);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dark header {
+            background: rgba(17, 20, 24, .8);
+            border-color: #283039;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #C7F0D8;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav {
+            display: flex;
+            gap: 24px;
+        }
+
+        nav a {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .dark nav a {
+            color: #cbd5e1
+        }
+
+        nav a.active {
+            background: #C7F0D8;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            color: #1f6645;
+        }
+
+        /* ===== MAIN ===== */
+        main {
+            display: flex;
+            justify-content: center;
+            padding: 40px 16px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 720px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* ===== PROFILE CARD ===== */
+        .card {
+            background: rgba(255, 255, 255, .85);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+            border: 1px solid rgba(255, 255, 255, .5);
+        }
+
+        .dark .card {
+            background: rgba(30, 38, 48, .85);
+            border-color: #283039;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .avatar::after {
+            content: "✎";
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, .3);
+            color: #fff;
+            opacity: 0;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        .avatar:hover::after {
+            opacity: 1
+        }
+
+        .profile-info h3 {
+            font-size: 18px
+        }
+
+        .profile-info p {
+            font-size: 12px;
+            color: #6b7280
+        }
+
+        .dark .profile-info p {
+            color: #9dabb9
+        }
+
+        .btn {
+            margin-left: auto;
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            background: #f1f5f9;
+        }
+
+        .dark .btn {
+            background: #283039;
+            color: #fff
+        }
+
+        /* ===== SECTION ===== */
+        .section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #9ca3af;
+            margin: 0 8px 8px;
+            font-weight: 600;
+            letter-spacing: .1em;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-top: 1px solid rgba(0, 0, 0, .05);
+            cursor: pointer;
+        }
+
+        .dark .row {
+            border-color: #283039
+        }
+
+        .row:first-child {
+            border-top: none
+        }
+
+        .row:hover {
+            background: rgba(0, 0, 0, .03)
+        }
+
+        .dark .row:hover {
+            background: #232c38
+        }
+
+        .row-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .row-left span {
+            color: #64748b
+        }
+
+        .dark .row-left span {
+            color: #9ca3af
+        }
+
+
+        /* ===== FOOTER ===== */
+        .logout {
+            color: #ef4444;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .version {
+            text-align: center;
+            font-size: 10px;
+            color: #9ca3af;
+            letter-spacing: .2em;
+            margin-top: 24px;
+        }
+    </style>
+    {% load static %}
+    <link rel="icon" href="{% static 'dashboard/img/logo.png' %}" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <span class="material-symbols-outlined">book_2</span>
+            </div>
+            Nhật ký
+        </div>
+        <nav>
+            <a href="{% url 'home' %}">Trang chủ</a>
+            <a href="{% url 'write_diary' %}">Viết nhật ký</a>
+            <a href="#">Lịch</a>
+            <a class="active" href="#">Cài đặt</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+
+            <div>
+                <h1>Cài đặt</h1>
+                <p style="color:#6b7280;font-size:14px">Tùy chỉnh trải nghiệm cá nhân</p>
+            </div>
+
+            <div class="card profile">
+                <div class="avatar" style="background-image:url('https://i.pravatar.cc/150')"></div>
+                <div class="profile-info">
+                    <h3>{{username}}</h3>
+                    <p>{{email}}</p>
+                </div>
+                <button class="btn">Đổi avatar</button>
+            </div>
+
+            <section>
+                <div class="section-title">Tùy chọn chung</div>
+                <div class="card">
+                    <div class="row">
+                        <div class="row-left">
+                            <span class="material-symbols-outlined">dark_mode</span>
+                            Giao diện tối
+                        </div>
+                        <label>
+                            <input type="checkbox" checked>
+                        </label>
+                    </div>
+                    <div class="row">
+                        <div class="row-left">
+                            <span class="material-symbols-outlined">auto_awesome</span>
+                            Gợi ý AI thông minh
+                        </div>
+                        <label>
+                            <input type="checkbox" checked>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-title">Tài khoản & Dữ liệu</div>
+                <div class="card">
+                    <div class="row">
+                        <div class="row-left">
+                            <span class="material-symbols-outlined">lock</span>
+                            Đổi mật khẩu
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </div>
+                    <div class="row">
+                        <div class="row-left">
+                            <span class="material-symbols-outlined">picture_as_pdf</span>
+                            Xuất nhật ký (PDF)
+                        </div>
+                        <button class="btn">Tải</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="logout">
+                <span class="material-symbols-outlined">logout</span>
+                Đăng xuất
+            </div>
+
+            <div class="version">NHATKYAPP v2.4.0</div>
+
+        </div>
+    </main>
+</body>
+
+</html>

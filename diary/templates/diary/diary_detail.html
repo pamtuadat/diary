@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Chi Tiết Nhật Ký</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <style>
+        /* RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #ffffff, #f5f5f5, #c7f0d8);
+            color: #1f2937;
+        }
+
+        /* HEADER */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: #c7f0d8;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+        }
+
+        .brand span {
+            color: #10b981;
+        }
+
+        .nav a {
+            padding: 8px 16px;
+            border-radius: 999px;
+            text-decoration: none;
+            color: #64748b;
+        }
+
+        .nav a.active {
+            background: #c7f0d8;
+            color: #1f2937;
+        }
+
+        /* LAYOUT */
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 32px;
+            display: flex;
+            gap: 32px;
+        }
+
+        .content {
+            flex: 3;
+        }
+
+        /* HERO */
+        .hero {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .hero h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 36px;
+        }
+
+        .tags {
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 8px 14px;
+            border-radius: 12px;
+            background: #f5f5f5;
+        }
+
+        .tag.primary {
+            background: #c7f0d8;
+            font-weight: 600;
+        }
+
+        /* ARTICLE */
+        .journal {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .journal p {
+            margin-bottom: 24px;
+            line-height: 1.8;
+            font-size: 18px;
+            color: #475569;
+        }
+
+        blockquote {
+            border-left: 6px solid #c7f0d8;
+            padding-left: 20px;
+            margin: 32px 0;
+            font-style: italic;
+            font-size: 22px;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn {
+            height: 48px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn.primary {
+            background: #c7f0d8;
+        }
+
+        .btn.danger {
+            background: white;
+            border: 1px solid #fecaca;
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <span class="material-symbols-outlined">book_2</span>
+            </div>
+            <h1 class="brand">Mindful<span>Journal</span></h1>
+            <nav class="nav">
+                <a href="#">Home</a>
+                <a class="active" href="#">Timeline</a>
+                <a href="#">Gallery</a>
+            </nav>
+        </div>
+
+        <div class="header-right">
+            <button class="icon-btn">
+                <span class="material-symbols-outlined">search</span>
+            </button>
+            <div class="user">
+                <div class="user-info">
+                    <p class="name">Alex Doe</p>
+                    <p class="role">Free Spirit</p>
+                </div>
+                <div class="avatar"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main class="content">
+
+            <!-- Breadcrumb -->
+            <div class="breadcrumb">
+                <a href="#">Timeline</a> ›
+                <a href="#">October 2023</a> ›
+                <span>Tuesday, 24th</span>
+            </div>
+
+            <!-- Hero -->
+            <section class="hero">
+                <div class="hero-text">
+                    <h2>Tuesday, Oct 24</h2>
+                    <div class="meta">
+                        <span>10:45 PM</span>
+                        <span>🌧️ Rainy Night</span>
+                    </div>
+                    <div class="tags">
+                        <span class="tag primary">Relaxing</span>
+                        <span class="tag">Reading</span>
+                        <span class="tag">CoffeeTime</span>
+                    </div>
+                </div>
+                <div class="hero-emoji">🌧️</div>
+            </section>
+
+            <!-- Article -->
+            <article class="journal">
+                <p>
+                    Today was surprisingly calm. The rain started around noon,
+                    tapping gently against the windowpane of my study.
+                </p>
+                <p>
+                    I finally picked up that book I've been meaning to read for months.
+                </p>
+
+                <blockquote>
+                    “Sometimes the most productive thing you can do is relax.”
+                </blockquote>
+
+                <p>
+                    Towards the evening, the rain intensified. I spent some time just
+                    watching the droplets race down the glass.
+                </p>
+            </article>
+        </main>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="card">
+                <h3>October Moods</h3>
+                <div class="calendar">
+                    <span>22</span>
+                    <span class="active">24</span>
+                    <span>26</span>
+                </div>
+            </div>
+
+            <button class="btn primary">
+                <span class="material-symbols-outlined">edit_square</span>
+                Edit Entry
+            </button>
+
+            <button class="btn danger">
+                <span class="material-symbols-outlined">delete</span>
+                Delete
+            </button>
+        </aside>
+    </div>
+
+</body>
+
+</html>

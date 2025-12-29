@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Quản lý Người dùng</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'dashboard/img/logo.png' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Poppins:wght@500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b", // Vibrant Green
+                        "primary-hover": "#0fd651",
+                        "primary-light": "#e0fde9",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                        "text-main": "#111813",
+                        "text-secondary": "#61896f",
+                        "danger": "#ef4444",
+                        "danger-light": "#fee2e2",
+                    },
+                    fontFamily: {
+                        "display": ["Poppins", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem", // Approx 20px
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(19, 236, 91, 0.05), 0 0 8px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: #445c44;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .menu-item:hover {
+            background-color: #e6fbe6;
+        }
+
+        .menu-item.active {
+            background-color: #13ec13;
+            color: #0a2b0a;
+            font-weight: 700;
+        }
+    </style>
+
+</head>
+
+<body class="bg-background-light text-text-main antialiased min-h-screen flex overflow-hidden 100vh">
+    <aside class="w-[280px] bg-white border-r border-[#e0e6e0] flex flex-col shrink-0 z-20">
+        <!-- TOP -->
+        <div class="flex flex-col p-6 gap-8 flex-1">
+            <!-- LOGO -->
+            <div class="flex items-center gap-3">
+                <div class="rounded-xl size-10 bg-primary/20 flex items-center justify-center">
+                    <img src="{% static 'dashboard/img/logo.png' %}" alt="logo">
+                </div>
+                <div>
+                    <h1 class="text-lg font-display font-bold">Diary Online</h1>
+                    <p class="text-xs uppercase tracking-wide text-[#618961]">Admin Panel</p>
+                </div>
+            </div>
+
+            <!-- MENU -->
+            <nav class="flex flex-col gap-2">
+                <a href="{% url 'admin' %}" class="menu-item ">
+                    <span>Trang chủ</span>
+                </a>
+
+                <a href="{% url 'users' %}" class="menu-item active">
+                    <span>Quản lý người dùng</span>
+                </a>
+                <a href="{% url 'diaries' %}" class="menu-item">
+                    <span>Quản lý nhật ký</span>
+                </a>
+
+                <a href="{% url 'reports' %}" class="menu-item">
+                    <span>Thống kê</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- LOGOUT -->
+        <div class="p-4 border-t border-[#e0e6e0]">
+            <a href="{% url 'logout' %}"
+                class="flex items-center gap-3 px-4 py-3  text-red-600 hover:bg-red-50 transition">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-medium">Đăng xuất</span>
+            </a>
+        </div>
+    </aside>
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        <header
+            class="h-16 bg-white/80 backdrop-blur-md border-b border-[#e0e6e0] flex items-center justify-between px-6 lg:px-8 sticky top-0 z-10 shrink-0">
+            <div class="flex items-center gap-2 text-sm text-[#618961]">
+                <span>Trang chủ</span>
+                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                <span class="text-[#111811] font-medium">Quản lý người dùng</span>
+            </div>
+            <div class="flex items-center gap-2 lg:gap-4">
+                <button class="relative p-2 text-[#618961] hover:bg-gray-100 rounded-full transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white"></span>
+                </button>
+                <button class="relative p-2 text-[#618961] hover:bg-gray-100 rounded-full transition-colors">
+                    <span class="material-symbols-outlined">settings</span>
+                </button>
+                <div class="h-8 w-px bg-[#e0e6e0] mx-1"></div>
+                <div class="flex items-center gap-3 pl-1">
+                    <div class="hidden md:flex flex-col items-end">
+                        <p class="text-[#111811] text-sm font-bold leading-none">{{username}}</p>
+                        <p class="text-[#618961] text-xs mt-1">{{email}}</p>
+                    </div>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-9 border-2 border-white shadow-sm ring-1 ring-[#e0e6e0]"
+                        data-alt="Admin User Avatar"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCeXk2E21vqWv_wiQRxS8S9F0qFWTTk5GrmJAO9ErEcjKQ0KnFZOjUSk_ZzXXItzrmr24hGO4Xn-LhYU1hZvGepy1IEZIEyoY5jtOUDlq6saRUoo9dmn3kHzRoeX9jIb_1pivpa9a-XmvurJMddQ3gnkwIUvVpAme5CbTvJZfioClxaDgt2ixDwxIEkcren-ESG2A3tYRO2l9tjBjqZ_9188duj3bj9Y4Ewv8BWDgC-E1D06UytixwJYeV50u8gs-fKv-8pP0RCEA");'>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-[1200px] mx-auto flex flex-col gap-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="flex flex-1 w-full md:w-auto gap-3">
+                        <div class="relative flex-1 max-w-md group">
+                            <span
+                                class="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary group-focus-within:text-primary transition-colors">
+                                <span class="material-symbols-outlined" style="font-size: 20px;">search</span>
+                            </span>
+                            <form action="{% url 'users' %}" method="GET">
+                                <input name="tim-kiem"
+                                    class="w-full h-12 pl-10 pr-4 rounded-xl border-none bg-white shadow-sm ring-1 ring-gray-200 focus:ring-2 focus:ring-primary focus:bg-white text-sm placeholder:text-gray-400 transition-all"
+                                    placeholder="Tìm kiếm theo tên hoặc email..." type="text" />
+                            </form>
+
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="relative group">
+                                <form action="#" method="GET">
+                                    <select name="role" onchange="this.form.submit()"
+                                        class="h-12 pl-4 pr-10  border-none bg-white shadow-sm ring-1 ring-gray-200 focus:ring-2 focus:ring-primary text-sm font-medium text-text-main appearance-none cursor-pointer min-w-[140px]">
+                                        <option value="all" selected>Role: All
+                                        </option>
+                                        <option value="admin">Admin
+                                        </option>
+                                        <option value="user">User
+                                        </option>
+                                    </select>
+                                </form>
+                                <span
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">
+                                </span>
+                            </div>
+                            <div class="relative group">
+                                <form action="#" method="GET">
+                                    <select name="status" onchange="this.form.submit()"
+                                        class="h-12 pl-4 pr-10  border-none bg-white shadow-sm ring-1 ring-gray-200 focus:ring-2 focus:ring-primary text-sm font-medium text-text-main appearance-none cursor-pointer min-w-[150px]">
+                                        <option value="all" selected>Status: All</option>
+                                        <option value="active">Active</option>
+                                        <option value="blocked">Blocked</option>
+                                    </select>
+                                </form>
+
+                                <span
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="openAddUserModal()"
+                        class="h-12 px-6 bg-primary hover:bg-primary-hover text-text-main font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined" style="font-size: 20px;">add</span>
+                        <span>Add New User</span>
+                    </button>
+                </div>
+                <div class="bg-white  shadow-soft border border-gray-100 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-[800px]">
+                            <thead>
+                                <tr class="bg-gray-50/50 border-b border-gray-100">
+                                    <th
+                                        class="px-6 py-4 text-left text-xs font-bold text-text-secondary uppercase tracking-wider font-display w-20">
+                                        ID</th>
+                                    <th
+                                        class="px-6 py-4 text-left text-xs font-bold text-text-secondary uppercase tracking-wider font-display">
+                                        User Info</th>
+                                    <th
+                                        class="px-6 py-4 text-left text-xs font-bold text-text-secondary uppercase tracking-wider font-display">
+                                        Role</th>
+                                    <th
+                                        class="px-6 py-4 text-left text-xs font-bold text-text-secondary uppercase tracking-wider font-display">
+                                        Status</th>
+                                    <th
+                                        class="px-6 py-4 text-left text-xs font-bold text-text-secondary uppercase tracking-wider font-display">
+                                        Joined Date</th>
+                                    <th
+                                        class="px-6 py-4 text-right text-xs font-bold text-text-secondary uppercase tracking-wider font-display">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="divide-y divide-gray-100">
+                                {% for user in page_obj %}
+                                <tr class="group hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 text-sm text-text-secondary">#{{user.id}}</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-4">
+                                            <div class="size-10 rounded-full bg-gray-200 bg-cover bg-center shrink-0"
+                                                data-alt="Avatar of Alice Nguyen"
+                                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6_sV1y-jfOdQ0ufY8GTnXesxqriySVe0Ky0hNwC2gYg3qCu7xodyRvhuyWVuvBLlhgtn6Ss6-1_VG0z9IGTU4sMz7R_uCgdYUNkbp76HoWE7k8VwA1cKzwTsgWPttX9m8OKJmZOeOmzBALKf1kMePq20SaWEqZdDGFUMJmb2-gz4o09r6jtaUuHM4GZdjwRn06huk7wDM4TPLB-MRMhngTCDNLDmB-D_Aa_KXzJS35rXqOABBWh1fDR903SAIhiUC4K7s4dTGQg");'>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-semibold text-text-main">{{user.username}}</p>
+                                                <p class="text-xs text-text-secondary">{{user.email}}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                            {% if user.is_staff %}
+                                            Admin
+                                            {% else %}
+                                            User
+                                            {% endif %}
+                                        </span>
+
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-light text-green-800 border border-green-200">
+                                            <span class="size-1.5 rounded-full bg-green-600"></span>
+                                            {% if user.is_active %}
+                                            Active
+                                            {% else %}
+                                            Blocked
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="text-sm text-text-secondary">{{user.date_joined|date:"d/m/Y"}}</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <div
+                                            class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button
+                                                class="p-2 rounded-lg text-text-secondary hover:bg-gray-100 hover:text-text-main transition-colors"
+                                                title="Phân quyền">
+                                                <span class="material-symbols-outlined"
+                                                    style="font-size: 20px;">manage_accounts</span>
+                                            </button>
+                                            <button
+                                                class="p-2 rounded-lg text-danger hover:bg-danger-light transition-colors"
+                                                title="Khóa user">
+                                                <span class="material-symbols-outlined"
+                                                    style="font-size: 20px;">lock</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr class="text-center">
+                                    <td colspan="6">Không tìm thấy user.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                        <p class="text-sm text-text-secondary">Showing <span
+                                class="font-medium text-text-main">1-5</span> of <span
+                                class="font-medium text-text-main">{{user_size}}</span> users</p>
+                        <div class="flex gap-2">
+
+                            <button
+                                class="px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-text-secondary hover:border-gray-300 hover:text-text-main disabled:opacity-50 disabled:cursor-not-allowed">
+                                {% if page_obj.has_previous %}
+                                <a href="?page={{ page_obj.previous_page_number }}">Trước</a>
+                                {% endif %}
+                            </button>
+
+
+                            <button
+                                class="size-9 rounded-lg flex items-center justify-center bg-primary text-[#052e16] font-bold text-sm shadow-sm hover:bg-primary-dark/20 transition-colors">{{page_obj.number}}
+                            </button>
+
+                            <button
+                                class="px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-text-secondary hover:border-gray-300 hover:text-text-main">
+                                {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">Sau</a>
+                                {% endif %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0"></div>
+        <div
+            class="hidden bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 relative transform scale-95 transition-all">
+            <div class="size-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mb-4 mx-auto">
+                <span class="material-symbols-outlined" style="font-size: 28px;">warning</span>
+            </div>
+            <h3 class="text-lg font-bold text-center text-text-main mb-2 font-display">Xác nhận khóa User?</h3>
+            <p class="text-center text-text-secondary text-sm mb-6">
+                Bạn có chắc chắn muốn khóa tài khoản <strong>Alice Nguyen</strong>? Người dùng này sẽ mất quyền truy cập
+                vào nhật ký ngay lập tức.
+            </p>
+            <div class="flex gap-3">
+                <button
+                    class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-text-main font-medium hover:bg-gray-50 transition-colors">
+                    Hủy bỏ
+                </button>
+                <button
+                    class="flex-1 px-4 py-2.5 rounded-xl bg-danger text-white font-medium hover:bg-red-600 transition-colors shadow-lg shadow-red-200">
+                    Đồng ý khóa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- model -->
+    <div id="addUserModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+
+        <div class="bg-white w-full max-w-md rounded-xl shadow-lg">
+            <form method="POST" action="{% url 'add_user' %}">
+                {% csrf_token %}
+
+                <!-- Header -->
+                <div class="px-6 py-4 border-b">
+                    <h2 class="text-lg font-semibold">Thêm người dùng</h2>
+                </div>
+
+                <!-- Body -->
+                <div class="px-6 py-4 space-y-4">
+
+                    <!-- Tên -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Tên người dùng</label>
+                        <input type="text" name="username" required
+                            class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300">
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Email</label>
+                        <input type="email" name="email" required
+                            class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300">
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Mật khẩu</label>
+                        <input type="password" name="password" required
+                            class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300">
+                    </div>
+
+                    <!-- Quyền Admin -->
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" name="is_admin" id="is_admin"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        <label for="is_admin" class="text-sm font-medium">
+                            Cấp quyền Admin
+                        </label>
+                    </div>
+
+                </div>
+
+
+                <!-- Footer -->
+                <div class="px-6 py-4 border-t flex justify-end gap-2">
+                    <button type="button" onclick="closeAddUserModal()"
+                        class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        Hủy
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                        Thêm
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- js -->
+    <script src="{% static 'dashboard/js/btnAddUser.js' %}"></script>
+
+</body>
+
+</html>

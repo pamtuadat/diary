@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Poppins:wght@600;700&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Material Icons -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "primary-hover": "#0fd650",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                        "surface": "#ffffff",
+                        "text-main": "#111813",
+                        "text-secondary": "#61896f",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "heading": ["Poppins", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "soft": "0 4px 20px -2px rgba(19, 236, 91, 0.05), 0 0 8px -2px rgba(0, 0, 0, 0.05)",
+                    }
+                },
+            },
+        }
+    </script>
+    {% load static %}
+    <link rel="icon" href="{% static 'dashboard/img/logo.png' %}" type="image/x-icon">
+    <style>
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: #445c44;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .menu-item:hover {
+            background-color: #e6fbe6;
+        }
+
+        .menu-item.active {
+            background-color: #13ec13;
+            color: #0a2b0a;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-text-main antialiased h-screen overflow-hidden flex">
+    <!-- Fixed Sidebar -->
+    <aside class="w-[280px] bg-white border-r border-[#e0e6e0] flex flex-col shrink-0 h-full z-20">
+        <!-- TOP -->
+        <div class="flex flex-col p-6 gap-8 flex-1">
+            <!-- LOGO -->
+            <div class="flex items-center gap-3">
+                <div class="rounded-xl size-10 bg-primary/20 flex items-center justify-center">
+                    <img src="{% static 'dashboard/img/logo.png' %}" alt="logo">
+                </div>
+                <div>
+                    <h1 class="text-lg font-display font-bold">Diary Online</h1>
+                    <p class="text-xs uppercase tracking-wide text-[#618961]">Admin Panel</p>
+                </div>
+            </div>
+
+            <!-- MENU -->
+            <nav class="flex flex-col gap-2">
+                <a href="{% url 'admin' %}" class="menu-item active">
+                    <span>Trang chủ</span>
+                </a>
+
+                <a href="{% url 'users' %}" class="menu-item">
+                    <span>Quản lý người dùng</span>
+                </a>
+                <a href="{% url 'diaries' %}" class="menu-item">
+                    <span>Quản lý nhật ký</span>
+                </a>
+
+                <a href="{% url 'reports' %}" class="menu-item">
+                    <span>Thống kê</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- LOGOUT -->
+        <div class="p-4 border-t border-[#e0e6e0]">
+            <a href="{% url 'logout' %}"
+                class="flex items-center gap-3 px-4 py-3  text-red-600 hover:bg-red-50 transition">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-medium">Đăng xuất</a></span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col h-full relative overflow-hidden">
+        <!-- Top Header -->
+        <header
+            class="h-16 bg-white/80 backdrop-blur-md border-b border-[#e0e6e0] flex items-center justify-between px-6 lg:px-8 sticky top-0 z-10 shrink-0">
+            <div class="flex items-center gap-2 text-sm text-[#618961]">
+                <span>Trang chủ</span>
+                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                <span class="text-[#111811] font-medium"></span>
+            </div>
+            <div class="flex items-center gap-2 lg:gap-4">
+                <button class="relative p-2 text-[#618961] hover:bg-gray-100 rounded-full transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white"></span>
+                </button>
+                <button class="relative p-2 text-[#618961] hover:bg-gray-100 rounded-full transition-colors">
+                    <span class="material-symbols-outlined">settings</span>
+                </button>
+                <div class="h-8 w-px bg-[#e0e6e0] mx-1"></div>
+                <div class="flex items-center gap-3 pl-1">
+                    <div class="hidden md:flex flex-col items-end">
+                        <p class="text-[#111811] text-sm font-bold leading-none">{{username}}</p>
+                        <p class="text-[#618961] text-xs mt-1">{{email}}</p>
+                    </div>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-9 border-2 border-white shadow-sm ring-1 ring-[#e0e6e0]"
+                        data-alt="Admin User Avatar"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCeXk2E21vqWv_wiQRxS8S9F0qFWTTk5GrmJAO9ErEcjKQ0KnFZOjUSk_ZzXXItzrmr24hGO4Xn-LhYU1hZvGepy1IEZIEyoY5jtOUDlq6saRUoo9dmn3kHzRoeX9jIb_1pivpa9a-XmvurJMddQ3gnkwIUvVpAme5CbTvJZfioClxaDgt2ixDwxIEkcren-ESG2A3tYRO2l9tjBjqZ_9188duj3bj9Y4Ewv8BWDgC-E1D06UytixwJYeV50u8gs-fKv-8pP0RCEA");'>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Scrollable Dashboard Content -->
+        <main class="flex-1 overflow-y-auto p-8 scroll-smooth">
+            <div class="max-w-[1200px] mx-auto flex flex-col gap-8 pb-10">
+                <!-- Page Heading & Timer -->
+                <div class="flex flex-wrap items-end justify-between gap-4">
+                    <div class="flex flex-col gap-1">
+                        <h1 class="font-heading text-3xl font-bold text-text-main">Tổng quan hệ thống</h1>
+                        <p class="text-text-secondary">Theo dõi hoạt động và trạng thái máy chủ nhật ký.</p>
+                    </div>
+                    <!-- Simple System Clock/Timer -->
+                    <div
+                        class="flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-100">
+                        <span class="material-symbols-outlined text-text-secondary">schedule</span>
+                        <span class="text-sm font-medium text-text-main">Last Updated: <span class="font-bold">Just
+                                now</span></span>
+                    </div>
+                </div>
+                <!-- Stats Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1 -->
+                    <div
+                        class="bg-surface p-6   border border-slate-100 shadow-soft hover:-translate-y-1 transition-transform duration-300">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="p-3 bg-blue-50 rounded-xl text-blue-600">
+                                <span class="material-symbols-outlined">group</span>
+                            </div>
+                            <span
+                                class="flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg">
+                                <span class="material-symbols-outlined !text-[14px]">trending_up</span> +5%
+                            </span>
+                        </div>
+                        <p class="text-text-secondary text-sm font-medium">Tổng người dùng</p>
+                        <h3 class="font-heading text-3xl font-bold text-text-main mt-1">{{user_size}}</h3>
+                    </div>
+                    <!-- Card 2 -->
+                    <div
+                        class="bg-surface p-6   border border-slate-100 shadow-soft hover:-translate-y-1 transition-transform duration-300">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="p-3 bg-purple-50 rounded-xl text-purple-600">
+                                <span class="material-symbols-outlined">library_books</span>
+                            </div>
+                            <span
+                                class="flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg">
+                                <span class="material-symbols-outlined !text-[14px]">trending_up</span> +12%
+                            </span>
+                        </div>
+                        <p class="text-text-secondary text-sm font-medium">Tổng nhật ký</p>
+                        <h3 class="font-heading text-3xl font-bold text-text-main mt-1">{{count_diary}}</h3>
+                    </div>
+                    <!-- Card 3 -->
+                    <div
+                        class="bg-surface p-6   border border-slate-100 shadow-soft hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group">
+                        <div
+                            class="absolute -right-6 -top-6 w-24 h-24 bg-primary/20 rounded-full blur-2xl group-hover:bg-primary/30 transition-all">
+                        </div>
+                        <div class="flex items-start justify-between mb-4 relative z-10">
+                            <div class="p-3 bg-primary/20 rounded-xl text-green-800">
+                                <span class="material-symbols-outlined">today</span>
+                            </div>
+                            <span
+                                class="flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg">
+                                <span class="material-symbols-outlined !text-[14px]">arrow_upward</span> +20%
+                            </span>
+                        </div>
+                        <p class="text-text-secondary text-sm font-medium relative z-10">Nhật ký hôm nay</p>
+                        <h3 class="font-heading text-3xl font-bold text-text-main mt-1 relative z-10">
+                            {{count_diary_today}}</h3>
+                    </div>
+                    <!-- Card 4 -->
+                    <div
+                        class="bg-surface p-6   border border-slate-100 shadow-soft hover:-translate-y-1 transition-transform duration-300">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="p-3 bg-orange-50 rounded-xl text-orange-600">
+                                <span class="material-symbols-outlined">wifi</span>
+                            </div>
+                            <span class="text-xs font-bold text-text-secondary bg-slate-100 px-2 py-1 rounded-lg">
+                                Stable
+                            </span>
+                        </div>
+                        <p class="text-text-secondary text-sm font-medium">Đang Online</p>
+                        <h3 class="font-heading text-3xl font-bold text-text-main mt-1">{{count_user_online}}</h3>
+                    </div>
+                </div>
+                <!-- Recent Activity & Chart Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Activity Feed (Takes up 2 columns) -->
+                    <div class="lg:col-span-2 bg-surface   border border-slate-100 shadow-soft flex flex-col">
+                        <div class="p-6 border-b border-slate-50 flex items-center justify-between">
+                            <h3 class="font-heading text-lg font-bold text-text-main">Hoạt động gần đây</h3>
+                            <button class="text-primary text-sm font-bold hover:underline">Xem tất cả</button>
+                        </div>
+                        <div class="p-2">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="p-4 text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                            User</th>
+                                        <th
+                                            class="p-4 text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                            Action</th>
+                                        <th
+                                            class="p-4 text-xs font-medium text-text-secondary uppercase tracking-wider text-right">
+                                            Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm">
+                                    <tr
+                                        class="hover:bg-background-light/50 transition-colors border-b border-dashed border-slate-100 last:border-0">
+                                        <td class="p-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-slate-200 bg-center bg-cover"
+                                                    data-alt="Portrait of a female user"
+                                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6P-r_ix3wV_OgNAXo5O2x5GFD5S_hCoCcZx0Hm8v3L0MQYB-ddBJVrivogXzVPAcSGvWIWJ_lQ9zNPCkTnoCOLlUX_eL74NaKyfIflLjG6nwysfzMc1Gd67u3_iWGoLVGWhJGqT0dryAa1-UDlYEtt1D8QEPsWTfoLVOU8H2mcbw4AaCp6aIReV0fgBJcRbwjvraL_i35NrSXdwV_oaOuRe4gfkQ3Xl4c_C7o-7ZXRW9sJLnNtoEsXVInM6N6lLa-sNwhaAxrfQ");'>
+                                                </div>
+                                                <span class="font-semibold text-text-main">Minh Anh</span>
+                                            </div>
+                                        </td>
+                                        <td class="p-4">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-50 text-green-700 text-xs font-bold">
+                                                <span class="material-symbols-outlined !text-[14px]">edit_note</span>
+                                                Viết nhật ký
+                                            </span>
+                                        </td>
+                                        <td class="p-4 text-right text-text-secondary font-medium">2 mins ago</td>
+                                    </tr>
+                                    <tr
+                                        class="hover:bg-background-light/50 transition-colors border-b border-dashed border-slate-100 last:border-0">
+                                        <td class="p-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-slate-200 bg-center bg-cover"
+                                                    data-alt="Portrait of a male user"
+                                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD6lyPdUWcn1Icq0AMSRBDlTU1qigfiFOS_AIeapNQP4YjJ0KANYGYp5s9ZlUiMO1k96gM8A0F4YMuwEAYzFbbj6enC-F8FQNaaU8qJz6gatJFTX7AcYynhOPyICJ3G3CAX_RvNysm5yuPF2BZDH5kxrHlzA3eyhMRFeZP08Shhh7UvhyaXTus0aj43-Ulv5z1W28Q6FjZqd4T0f1uRqQY8_2jGGq7aaV21yCg-735A4hWTEZHsdRbPdffKt3y6mLs1yxRbIK0Lhg");'>
+                                                </div>
+                                                <span class="font-semibold text-text-main">Tuấn Kiệt</span>
+                                            </div>
+                                        </td>
+                                        <td class="p-4">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 text-xs font-bold">
+                                                <span class="material-symbols-outlined !text-[14px]">person_add</span>
+                                                Đăng ký mới
+                                            </span>
+                                        </td>
+                                        <td class="p-4 text-right text-text-secondary font-medium">15 mins ago</td>
+                                    </tr>
+                                    <tr
+                                        class="hover:bg-background-light/50 transition-colors border-b border-dashed border-slate-100 last:border-0">
+                                        <td class="p-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-slate-200 bg-center bg-cover"
+                                                    data-alt="Portrait of a male user with beard"
+                                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBI-Cko1M12U_nIInXhO_c-fWcLD7E0QL69YMclORTTGH3SdMwQ71BATjIIO4fEy3bO0c8DbNw5fbiMWEmjfAi9IxZbJkFNnsYHnZla4MPf_Uzmk2QZTMa55TKOQvG6jjwvx_YWrV_ZIWYi1NEFDPJ9a0zO7WpfCX3LtRwSYgTWqMtASDVt1NOMkkiAJ-VbwhFb6HldtC6TcCUKp1wcbGS1afmEeF9EPTFgTJU13LtwsKVggXFwqW5oElloKKeQAQv41ya_Uh8KHg");'>
+                                                </div>
+                                                <span class="font-semibold text-text-main">Hoàng Nam</span>
+                                            </div>
+                                        </td>
+                                        <td class="p-4">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-50 text-red-700 text-xs font-bold">
+                                                <span class="material-symbols-outlined !text-[14px]">report</span>
+                                                Báo cáo lỗi
+                                            </span>
+                                        </td>
+                                        <td class="p-4 text-right text-text-secondary font-medium">1 hour ago</td>
+                                    </tr>
+                                    <tr
+                                        class="hover:bg-background-light/50 transition-colors border-b border-dashed border-slate-100 last:border-0">
+                                        <td class="p-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-slate-200 bg-center bg-cover"
+                                                    data-alt="Portrait of a female user smiling"
+                                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDLXENVLDqcn1AF9eztC29ngrlelDzXPQqT9FrtfkurbwcSpq61TG2f7C5MBxCxLofSgrjk-qcDLSepIhwflat_JkrEjILra5ZIEE3CGCK7WiXNDXIIqOLb_qmfRp8N8Te9NsRO9G_ekmqKxTDUUAE03FxCd2bQ7i-Y-5Ns6vYAMXlb0WPub7UOZZdMvMqG-cYS8yWuzTqFUV0IxAMXV5XJnusR3vKDL3cayoUjqm5_yK495b3R13nIFUhc_Vi_N1SebPI_sFr1gQ");'>
+                                                </div>
+                                                <span class="font-semibold text-text-main">Lan Ngọc</span>
+                                            </div>
+                                        </td>
+                                        <td class="p-4">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-50 text-green-700 text-xs font-bold">
+                                                <span class="material-symbols-outlined !text-[14px]">edit_note</span>
+                                                Viết nhật ký
+                                            </span>
+                                        </td>
+                                        <td class="p-4 text-right text-text-secondary font-medium">2 hours ago</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- System Status Widget -->
+                    <div class="flex flex-col gap-6">
+                        <!-- Server Load -->
+                        <div class="bg-surface p-6   border border-slate-100 shadow-soft">
+                            <h3 class="font-heading text-lg font-bold text-text-main mb-4">Trạng thái Server</h3>
+                            <div class="flex flex-col gap-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex justify-between text-sm font-medium">
+                                        <span class="text-text-secondary">CPU Usage</span>
+                                        <span class="text-text-main">24%</span>
+                                    </div>
+                                    <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-green-500 w-[24%] rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex justify-between text-sm font-medium">
+                                        <span class="text-text-secondary">Memory</span>
+                                        <span class="text-text-main">58%</span>
+                                    </div>
+                                    <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-yellow-400 w-[58%] rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex justify-between text-sm font-medium">
+                                        <span class="text-text-secondary">Storage</span>
+                                        <span class="text-text-main">12%</span>
+                                    </div>
+                                    <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-blue-500 w-[12%] rounded-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Quick Actions -->
+                        <div
+                            class="bg-surface p-6   border border-slate-100 shadow-soft bg-gradient-to-br from-surface to-green-50/50">
+                            <h3 class="font-heading text-lg font-bold text-text-main mb-4">Hành động nhanh</h3>
+                            <div class="flex flex-col gap-3">
+                                <button
+                                    class="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:border-primary/50 transition-all group">
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-primary/20 text-green-700 flex items-center justify-center group-hover:bg-primary group-hover:text-black transition-colors">
+                                        <span class="material-symbols-outlined !text-[20px]">add</span>
+                                    </div>
+                                    <span class="text-sm font-bold text-text-main">Tạo thông báo</span>
+                                </button>
+                                <button
+                                    class="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:border-red-200 transition-all group">
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined !text-[20px]">block</span>
+                                    </div>
+                                    <span class="text-sm font-bold text-text-main">Chặn IP Spam</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

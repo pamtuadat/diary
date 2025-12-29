@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viết Nhật Ký</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    {% load static %}
+    <link rel="icon" href="{% static 'dashboard/img/logo.png' %}" type="image/x-icon">
+    <style>
+        /* ================= RESET ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #ffffff, #e8f9ee, #c7f0d8);
+            color: #1f2937;
+        }
+
+        /* ================= HEADER ================= */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+        }
+
+        .header-title h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+        }
+
+        .header-title span {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            height: 44px;
+            padding: 0 20px;
+            border-radius: 16px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-light {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid #fff;
+        }
+
+        .btn-dark {
+            background: #111827;
+            color: #fff;
+        }
+
+        /* ================= MAIN ================= */
+        main {
+            flex: 1;
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            overflow: hidden;
+        }
+
+        /* ================= EDITOR ================= */
+        .editor-wrapper {
+            flex: 1;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+        }
+
+        .editor {
+            max-width: 900px;
+            margin: auto;
+            padding: 40px;
+        }
+
+        /* AI suggestion */
+        .ai-box {
+            background: #e8f9ee;
+            border: 1px solid #c7f0d8;
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .ai-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #16a34a;
+        }
+
+        .ai-text p:first-child {
+            font-size: 11px;
+            font-weight: 700;
+            color: #166534;
+        }
+
+        .ai-text p:last-child {
+            font-size: 14px;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid #e5e7eb;
+            padding: 8px;
+            display: flex;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        .tool-btn {
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #9ca3af;
+        }
+
+        .tool-btn:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        /* Meta */
+        .meta {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .meta span {
+            padding: 6px 12px;
+            background: #f9fafb;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Title & content */
+        .editor-title {
+            width: 100%;
+            border: none;
+            font-size: 42px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .editor-title:focus {
+            outline: none;
+        }
+
+        .editor-content {
+            width: 100%;
+            min-height: 500px;
+            border: none;
+            resize: none;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #374151;
+        }
+
+        .editor-content:focus {
+            outline: none;
+        }
+
+        /* ================= SIDEBAR ================= */
+        aside {
+            width: 320px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            padding: 24px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        @media (min-width: 1280px) {
+            aside {
+                display: block;
+            }
+        }
+
+        .sidebar-section {
+            margin-bottom: 32px;
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* Mood */
+        .mood {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+        }
+
+        .mood div {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            background: #f3f4f6;
+            cursor: pointer;
+        }
+
+        .tag.active {
+            background: #e8f9ee;
+            color: #166534;
+            border: 1px solid #c7f0d8;
+        }
+
+        /* Calendar */
+        .calendar {
+            background: #fff;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+
+        .calendar-grid span {
+            font-size: 12px;
+            padding: 6px;
+            border-radius: 50%;
+        }
+
+        .calendar-grid .today {
+            background: #c7f0d8;
+            font-weight: 700;
+        }
+
+        .title-day span {
+            font-size: 14px;
+            padding: 7px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-left">
+            <button class="back-btn"><a href="{% url 'index' %}">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </a>
+
+            </button>
+            <div class="header-title">
+                <h2>Viết Nhật Ký</h2>
+                <span>Đã lưu nháp lúc 10:23</span>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button class="btn btn-light">Lưu nháp</button>
+            <button class="btn btn-light">Xem trước</button>
+            <button class="btn btn-dark" type="submit" form="diaryForm">Hoàn tất</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="editor-wrapper">
+            <div class="editor">
+
+                <div class="ai-box">
+                    <div class="ai-icon">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                    </div>
+                    <div class="ai-text">
+                        <p>GỢI Ý AI</p>
+                        <p>"Hôm nay bạn cảm thấy thế nào?"</p>
+                    </div>
+                </div>
+
+                <div class="toolbar">
+                    <div class="tool-btn"><span class="material-symbols-outlined">format_bold</span></div>
+                    <div class="tool-btn"><span class="material-symbols-outlined">format_italic</span></div>
+                    <div class="tool-btn"><span class="material-symbols-outlined">format_underlined</span></div>
+                    <div class="tool-btn"><span class="material-symbols-outlined">image</span></div>
+                    <div class="tool-btn"><span class="material-symbols-outlined">mood</span></div>
+                </div>
+
+                <div class="meta">
+                    <span id="time"></span>
+                    <span>Thêm thẻ...</span>
+                </div>
+                <form id="diaryForm" method="POST">
+                    {% csrf_token %}
+                    <input class="editor-title" name="input-title" placeholder="Tiêu đề nhật ký">
+                    <textarea class="editor-content" name="input-content"
+                        placeholder="Viết những suy nghĩ của bạn ở đây..."></textarea>
+                </form>
+
+            </div>
+        </section>
+
+        <aside>
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    <span class="material-symbols-outlined">sentiment_satisfied</span>
+                    Cảm xúc
+                </div>
+                <div class="mood">
+                    <div>😞</div>
+                    <div>😕</div>
+                    <div>😐</div>
+                    <div>🙂</div>
+                    <div>😁</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    <span class="material-symbols-outlined">label</span>
+                    Tags
+                </div>
+                <div class="tags">
+                    <span class="tag">#biếtơn</span>
+                    <span class="tag">#suyngẫm</span>
+                    <span class="tag active">#ý tưởng</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    <span>Lịch </span>
+                </div>
+                <div class="calendar">
+                    <div class="title-day">
+                        <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Sun</span>
+                    </div>
+                    <div class="calendar-grid" id="calendar"></div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- js -->
+    <script src="{% static 'diary/js/calendar.js' %}"></script>
+    <script>
+        window.onload = function () {
+            document.getElementById("time").innerText = new Date().toLocaleString();
+        };
+    </script>
+</body>
+
+
+</html>

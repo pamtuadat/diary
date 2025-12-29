@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng ký</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    {% load static %}
+    <link rel="icon" href="{% static 'dashboard/img/logo.png' %}" type="image/x-icon">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom, #ffffff, #E8FAF0);
+            color: #121714;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            color: #0f3925;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Header */
+        header {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            color: #1e2e25;
+        }
+
+        .logo span {
+            font-size: 32px;
+        }
+
+        nav a {
+            margin-left: 24px;
+            font-size: 14px;
+            color: rgba(18, 23, 20, .7);
+        }
+
+        /* Main */
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 480px;
+            background: #fff;
+            border-radius: 24px;
+            padding: 40px 32px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, .08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 240px;
+            height: 240px;
+            background: rgba(199, 240, 216, .6);
+            border-radius: 50%;
+            filter: blur(60px);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: rgba(199, 240, 216, .7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            color: #1e2e25;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #678373;
+            margin-bottom: 32px;
+        }
+
+        /* Form */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-left: 4px;
+        }
+
+        .field {
+            position: relative;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+            font-size: 15px;
+        }
+
+        .field input:focus {
+            outline: none;
+            background: #fff;
+            border-color: #c7f0d8;
+            box-shadow: 0 0 0 2px rgba(199, 240, 216, .6);
+        }
+
+        .field span {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #678373;
+            font-size: 20px;
+        }
+
+        .toggle {
+            position: absolute;
+            right: 54px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #9CA3AF;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #678373;
+        }
+
+        .checkbox input {
+            cursor: pointer;
+        }
+
+        .submit {
+            margin-top: 8px;
+            padding: 14px;
+            border-radius: 16px;
+            border: none;
+            background: #c7f0d8;
+            color: #0f3925;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .submit:hover {
+            background: #b2e3c7;
+        }
+
+        /* Footer link */
+        .login-link {
+            margin-top: 28px;
+            text-align: center;
+            font-size: 14px;
+            color: #678373;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: rgba(103, 131, 115, .6);
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 16px 20px;
+            }
+
+            .card {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="{% static 'dashboard/img/logo.png' %}" alt="logo" width="70" height="70">
+        </div>
+        <nav>
+            <a href="#">Về chúng tôi</a>
+            <a href="#">Hỗ trợ</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="card">
+            <div class="card-content">
+                <div class="icon">
+                    <img src="{% static 'dashboard/img/logo.png' %}" alt="logo" width="70" height="70">
+                </div>
+
+                <h1>Tạo tài khoản mới</h1>
+                <p class="subtitle">Bắt đầu hành trình viết nên câu chuyện của bạn</p>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div>
+                        <label>User name</label>
+                        <div class="field">
+                            <span class="material-symbols-outlined">person</span>
+                            <input type="text" name="username" placeholder="Nguyen Van A" required />
+                        </div>
+                    </div>
+                    <div>
+                        <label>Email</label>
+                        <div class="field">
+                            <span class="material-symbols-outlined">mail</span>
+                            <input type="email" name="email" placeholder="name@example.com" required />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label>Mật khẩu</label>
+                        <div class="field">
+                            <span class="material-symbols-outlined">lock</span>
+                            <input type="password" id="password" name="password" placeholder="******" required />
+                            <button type="button" class="toggle"><span class="material-symbols-outlined toggle-password"
+                                    data-target="password"
+                                    onclick="togglePasswordVisibility(this)">visibility_off</span></button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label>Nhập lại mật khẩu</label>
+                        <div class="field">
+                            <span class="material-symbols-outlined">lock_reset</span>
+                            <input type="password" id="confirmPassword" placeholder="******" required />
+                            <button type="button" class="toggle"><span class="material-symbols-outlined toggle-password"
+                                    data-target="confirmPassword"
+                                    onclick="togglePasswordVisibility(this)">visibility_off</span></button>
+                        </div>
+                        <small id="passwordError" style="margin-top: 10px;color:red; display:none;">
+                            Mật khẩu không trùng khớp
+                        </small>
+                    </div>
+
+                    <div class="checkbox">
+                        <input type="checkbox" />
+                        <span>Tôi đồng ý với <a href="#">Điều khoản</a> &amp; <a href="#">Chính sách</a></span>
+                    </div>
+
+                    <button class="submit">Đăng ký</button>
+                </form>
+
+                <p class="login-link">
+                    Đã có tài khoản? <a href="{% url 'login' %}"><strong>Đăng nhập</strong></a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        © 2023 Nhật Ký App. All rights reserved.
+    </footer>
+
+    <!-- js -->
+    <script src="{% static 'accounts/js/togglePasswordVisibility.js' %}"></script>
+    <script src="{% static 'accounts/js/confirmPasswordInput.js' %}"></script>
+</body>
+
+</html>
