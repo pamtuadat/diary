@@ -29,11 +29,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY","unsafe-secret")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '.railway.app'
-]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
