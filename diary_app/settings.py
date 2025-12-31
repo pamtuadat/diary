@@ -88,8 +88,8 @@ WSGI_APPLICATION = "diary_app.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "diary_db",
-        "USER": 'postgres',
+        "NAME": "phamtuandat425$diary_db",
+        "USER": 'phamtuandat425',
         "PASSWORD":'123456',
         "HOST":'localhost',
         "PORT":"5432"
